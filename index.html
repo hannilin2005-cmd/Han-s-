@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>MEND — a calendar for skin picking recovery</title>
+<meta name="description" content="A gentle daily tracker for skin picking (dermatillomania) recovery. Scratch off the clear days, patch up the picked ones." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Chewy&family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="app-header">
+      <h1 class="app-name">MEND</h1>
+      <p class="app-tagline">a calendar for skin picking recovery</p>
+    </header>
+
+    <main class="calendar-wrap">
+      <div class="calendar-card" id="calendarCard">
+
+        <svg class="spiral" id="spiralSvg" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+        <div class="page">
+          <div class="page-inner">
+
+            <div class="month-nav">
+              <button class="nav-btn" id="prevMonth" aria-label="Previous month">&#10094;</button>
+              <h2 class="month-title" id="monthTitle">JUNE</h2>
+              <button class="nav-btn" id="nextMonth" aria-label="Next month">&#10095;</button>
+            </div>
+            <p class="year-label" id="yearLabel">2026</p>
+
+            <div class="weekday-row" id="weekdayRow"></div>
+            <div class="grid" id="grid"></div>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <section class="legend" aria-label="Legend">
+      <div class="legend-item">
+        <span class="legend-swatch swatch-blank"></span>
+        <span>not marked yet</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch swatch-clear"><svg viewBox="0 0 40 40"><path class="scratch-demo" d="M8,10 Q20,34 32,30 Q18,20 30,8" /></svg></span>
+        <span>skin stayed clear</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch swatch-picked"><svg viewBox="0 0 40 40"><g class="patch-demo"><rect x="9" y="9" width="22" height="22" rx="6"/><path d="M14,20 L26,20 M20,14 L20,26" /></g></svg></span>
+        <span>picked — still okay</span>
+      </div>
+    </section>
+
+    <section class="stats" id="stats">
+      <div class="stat">
+        <span class="stat-value" id="statStreak">0</span>
+        <span class="stat-label">current streak</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="statBest">0</span>
+        <span class="stat-label">best streak</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="statMonthClear">0</span>
+        <span class="stat-label">clear this month</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="statMonthPicked">0</span>
+        <span class="stat-label">picked this month</span>
+      </div>
+    </section>
+
+    <p class="reassurance" id="reassurance">
+      A picked day doesn't erase your progress. Every clear day still counts — tap tomorrow's box when it comes.
+    </p>
+
+    <footer class="app-footer">
+      <button class="ghost-btn" id="exportBtn">export data</button>
+      <label class="ghost-btn" for="importInput">import data</label>
+      <input type="file" id="importInput" accept="application/json" hidden />
+    </footer>
+
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

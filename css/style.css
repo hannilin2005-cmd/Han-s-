@@ -1,0 +1,366 @@
+:root {
+  --bg: #0d0d0d;
+  --card: #6fea6f;
+  --card-dot: #58c95a;
+  --page: #fbfff5;
+  --ink: #2a3fbe;
+  --spiral-light: #6f8bff;
+  --spiral-dark: #14206b;
+  --mark: #b4531f;
+  --mark-soft: #f0c8a8;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  font-family: "Baloo 2", "Chewy", system-ui, sans-serif;
+  color: #f4f4f4;
+  min-height: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 40px) 16px 60px;
+}
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* ---------- header ---------- */
+
+.app-header {
+  text-align: center;
+}
+
+.app-name {
+  font-family: "Bagel Fat One", "Chewy", sans-serif;
+  font-size: clamp(2rem, 9vw, 2.6rem);
+  letter-spacing: 0.06em;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 0 18px rgba(255,255,255,0.15);
+}
+
+.app-tagline {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: #b9b9b9;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- calendar card ---------- */
+
+.calendar-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.calendar-card {
+  position: relative;
+  width: 100%;
+  background: var(--card);
+  background-image:
+    radial-gradient(var(--card-dot) 1.1px, transparent 1.6px);
+  background-size: 10px 10px;
+  padding: 34px 16px 22px;
+  transition: background-color 0.5s ease;
+  filter: drop-shadow(0 14px 28px rgba(0,0,0,0.45));
+}
+
+.spiral {
+  position: absolute;
+  top: -18px;
+  left: 4%;
+  width: 92%;
+  height: 40px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.page {
+  background: var(--page);
+  border-radius: 22px;
+  padding: 18px 14px 16px;
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.04);
+}
+
+.page-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ---------- month title ---------- */
+
+.month-nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+
+.month-title {
+  font-family: "Bagel Fat One", sans-serif;
+  font-size: clamp(2.4rem, 12vw, 3.4rem);
+  color: var(--ink);
+  margin: 0 44px;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  transition: color 0.5s ease, font-size 0.15s ease;
+  white-space: nowrap;
+}
+
+.month-title.medium { font-size: clamp(1.9rem, 10vw, 2.6rem); }
+.month-title.long { font-size: clamp(1.3rem, 8vw, 2rem); }
+
+.year-label {
+  text-align: center;
+  margin: -4px 0 4px;
+  font-weight: 700;
+  color: var(--ink);
+  opacity: 0.55;
+  letter-spacing: 0.18em;
+  font-size: 0.8rem;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--ink);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 50%;
+  line-height: 1;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+
+#prevMonth { left: 0; }
+#nextMonth { right: 0; }
+
+.nav-btn:hover, .nav-btn:focus-visible {
+  background: rgba(0,0,0,0.06);
+  outline: none;
+}
+
+/* ---------- weekday row ---------- */
+
+.weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.weekday-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--card);
+  font-weight: 800;
+  font-family: "Chewy", sans-serif;
+  font-size: clamp(0.7rem, 3vw, 0.95rem);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.15);
+}
+
+/* ---------- grid ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.day-cell {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 3px 0 0 5px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: clamp(0.72rem, 3.4vw, 0.95rem);
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.08s ease, background-color 0.2s ease;
+  overflow: hidden;
+}
+
+.day-cell.empty {
+  visibility: hidden;
+  cursor: default;
+}
+
+.day-cell.future {
+  opacity: 0.38;
+  cursor: default;
+}
+
+.day-cell.today {
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+.day-cell:active:not(.future):not(.empty) {
+  transform: scale(0.93);
+}
+
+.day-cell .mark-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.scratch {
+  fill: none;
+  stroke: var(--mark);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.patch rect {
+  fill: var(--mark-soft);
+  stroke: var(--mark);
+  stroke-width: 1.6;
+}
+
+.patch path {
+  stroke: var(--mark);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+/* ---------- legend ---------- */
+
+.legend {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 0.78rem;
+  color: #cfcfcf;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1.5px solid #555;
+  background: #1a1a1a;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.legend-swatch svg { width: 100%; height: 100%; }
+
+.scratch-demo {
+  fill: none;
+  stroke: #d97a3d;
+  stroke-width: 3.6;
+  stroke-linecap: round;
+}
+
+.patch-demo rect { fill: #f0c8a8; stroke: #b4531f; stroke-width: 2; }
+.patch-demo path { stroke: #b4531f; stroke-width: 2; stroke-linecap: round; }
+
+/* ---------- stats ---------- */
+
+.stats {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  background: #1a1a1a;
+  border-radius: 14px;
+  padding: 10px 4px;
+}
+
+.stat-value {
+  font-family: "Bagel Fat One", sans-serif;
+  font-size: clamp(1.3rem, 6vw, 1.7rem);
+  color: var(--card);
+}
+
+.stat-label {
+  font-size: 0.62rem;
+  color: #a3a3a3;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* ---------- reassurance ---------- */
+
+.reassurance {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #d6d6d6;
+  max-width: 380px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ---------- footer ---------- */
+
+.app-footer {
+  display: flex;
+  gap: 10px;
+}
+
+.ghost-btn {
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: #a3a3a3;
+  background: none;
+  border: 1px solid #3a3a3a;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.ghost-btn:hover { color: #fff; border-color: #666; }
+
+@media (max-width: 360px) {
+  .legend { gap: 10px; }
+}

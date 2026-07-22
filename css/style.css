@@ -1,14 +1,11 @@
 :root {
-  --bg: #0d0d0d;
-  --card: #6fea6f;
-  --card-dot: #58c95a;
-  --page: #fbfff5;
-  --ink: #2a3fbe;
-  --spiral-light: #6f8bff;
-  --spiral-dark: #14206b;
-  --mark: #b4531f;
-  --mark-soft: #f0c8a8;
-  color-scheme: light;
+  --clear: #7ed321;
+  --picked: #ff5a36;
+  --bg: #0a0a0a;
+  --panel: #141414;
+  --line: #2a2a2a;
+  --ink-on-color: #0a0a0a;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -17,350 +14,327 @@ html, body {
   margin: 0;
   padding: 0;
   background: var(--bg);
-  font-family: "Baloo 2", "Chewy", system-ui, sans-serif;
-  color: #f4f4f4;
+  color: #fff;
+  font-family: "Inter", system-ui, sans-serif;
   min-height: 100%;
 }
 
 body {
   display: flex;
   justify-content: center;
-  padding: clamp(16px, 4vw, 40px) 16px 60px;
+  padding: clamp(20px, 4vw, 48px) clamp(16px, 4vw, 48px) 40px;
 }
 
 .app {
   width: 100%;
-  max-width: 480px;
+  max-width: 1100px;
   display: flex;
   flex-direction: column;
+  gap: 28px;
+}
+
+/* ---------------------------------------------------------------
+ * layout
+ * ------------------------------------------------------------- */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+@media (min-width: 860px) {
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    align-items: start;
+    gap: 48px;
+  }
+}
+
+/* ---------------------------------------------------------------
+ * sidebar / brand
+ * ------------------------------------------------------------- */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.brand-row {
+  display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
 }
 
-/* ---------- header ---------- */
-
-.app-header {
-  text-align: center;
-}
-
-.app-name {
-  font-family: "Bagel Fat One", "Chewy", sans-serif;
-  font-size: clamp(2rem, 9vw, 2.6rem);
-  letter-spacing: 0.06em;
+.brand-month {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-size: clamp(3rem, 11vw, 4.4rem);
+  line-height: 0.85;
+  letter-spacing: -0.01em;
   margin: 0;
-  color: #fff;
-  text-shadow: 0 0 18px rgba(255,255,255,0.15);
-}
-
-.app-tagline {
-  margin: 4px 0 0;
-  font-size: 0.85rem;
-  color: #b9b9b9;
-  letter-spacing: 0.02em;
-}
-
-/* ---------- calendar card ---------- */
-
-.calendar-wrap {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.calendar-card {
-  position: relative;
-  width: 100%;
-  background: var(--card);
-  background-image:
-    radial-gradient(var(--card-dot) 1.1px, transparent 1.6px);
-  background-size: 10px 10px;
-  padding: 34px 16px 22px;
-  transition: background-color 0.5s ease;
-  filter: drop-shadow(0 14px 28px rgba(0,0,0,0.45));
-}
-
-.spiral {
-  position: absolute;
-  top: -18px;
-  left: 4%;
-  width: 92%;
-  height: 40px;
-  overflow: visible;
-  pointer-events: none;
-}
-
-.page {
-  background: var(--page);
-  border-radius: 22px;
-  padding: 18px 14px 16px;
-  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.04);
-}
-
-.page-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* ---------- month title ---------- */
-
-.month-nav {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-}
-
-.month-title {
-  font-family: "Bagel Fat One", sans-serif;
-  font-size: clamp(2.4rem, 12vw, 3.4rem);
-  color: var(--ink);
-  margin: 0 44px;
+  flex: 1;
   text-align: center;
-  line-height: 1;
-  letter-spacing: 0.01em;
-  transition: color 0.5s ease, font-size 0.15s ease;
-  white-space: nowrap;
+  transition: color 0.3s ease;
 }
 
-.month-title.medium { font-size: clamp(1.9rem, 10vw, 2.6rem); }
-.month-title.long { font-size: clamp(1.3rem, 8vw, 2rem); }
-
-.year-label {
-  text-align: center;
-  margin: -4px 0 4px;
-  font-weight: 700;
-  color: var(--ink);
-  opacity: 0.55;
-  letter-spacing: 0.18em;
-  font-size: 0.8rem;
+@media (min-width: 860px) {
+  .brand-month { text-align: left; }
 }
 
-.nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+.nav-arrow {
   background: none;
-  border: none;
-  color: var(--ink);
-  font-size: 1.3rem;
-  cursor: pointer;
-  padding: 6px 10px;
+  border: 1.5px solid var(--line);
+  color: #fff;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  line-height: 1;
-  transition: background 0.15s ease;
+  cursor: pointer;
+  font-size: 1rem;
   flex-shrink: 0;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-#prevMonth { left: 0; }
-#nextMonth { right: 0; }
-
-.nav-btn:hover, .nav-btn:focus-visible {
-  background: rgba(0,0,0,0.06);
+.nav-arrow:hover, .nav-arrow:focus-visible {
+  border-color: #fff;
   outline: none;
 }
 
-/* ---------- weekday row ---------- */
-
-.weekday-row {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+.brand-sub {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   margin-top: 6px;
 }
 
-.weekday-pill {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--card);
+.brand-app {
   font-weight: 800;
-  font-family: "Chewy", sans-serif;
-  font-size: clamp(0.7rem, 3vw, 0.95rem);
-  box-shadow: 0 3px 0 rgba(0,0,0,0.15);
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
 }
 
-/* ---------- grid ---------- */
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+.brand-num {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--clear);
+  transition: color 0.3s ease;
 }
 
-.day-cell {
-  position: relative;
-  aspect-ratio: 1;
-  border: 1.5px solid color-mix(in srgb, var(--ink) 35%, transparent);
-  border-radius: 8px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 3px 0 0 5px;
-  color: var(--ink);
-  font-weight: 700;
-  font-size: clamp(0.72rem, 3.4vw, 0.95rem);
-  background: transparent;
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform 0.08s ease, background-color 0.2s ease;
-  overflow: hidden;
+.brand-tagline {
+  margin: 4px 0 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #8a8a8a;
+  text-transform: uppercase;
 }
 
-.day-cell.empty {
-  visibility: hidden;
-  cursor: default;
+/* ---------------------------------------------------------------
+ * side blocks (legend + stats)
+ * ------------------------------------------------------------- */
+
+.side-block {
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
 }
 
-.day-cell.future {
-  opacity: 0.38;
-  cursor: default;
-}
-
-.day-cell.today {
-  background: color-mix(in srgb, var(--ink) 14%, transparent);
-  box-shadow: inset 0 0 0 2px var(--ink);
-}
-
-.day-cell:active:not(.future):not(.empty) {
-  transform: scale(0.93);
-}
-
-.day-cell .mark-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.scratch {
-  fill: none;
-  stroke: var(--mark);
-  stroke-width: 3.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.patch rect {
-  fill: var(--mark-soft);
-  stroke: var(--mark);
-  stroke-width: 1.6;
-}
-
-.patch path {
-  stroke: var(--mark);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-}
-
-/* ---------- legend ---------- */
-
-.legend {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-  justify-content: center;
-  font-size: 0.78rem;
-  color: #cfcfcf;
-}
-
-.legend-item {
+.block-title {
   display: flex;
   align-items: center;
-  gap: 6px;
-}
-
-.legend-swatch {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  border: 1.5px solid #555;
-  background: #1a1a1a;
-  display: inline-flex;
-  overflow: hidden;
-}
-
-.legend-swatch svg { width: 100%; height: 100%; }
-
-.scratch-demo {
-  fill: none;
-  stroke: #d97a3d;
-  stroke-width: 3.6;
-  stroke-linecap: round;
-}
-
-.patch-demo rect { fill: #f0c8a8; stroke: #b4531f; stroke-width: 2; }
-.patch-demo path { stroke: #b4531f; stroke-width: 2; stroke-linecap: round; }
-
-/* ---------- stats ---------- */
-
-.stats {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
-  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0 0 12px;
 }
 
-.stat {
+.title-arrow {
+  color: var(--clear);
+  font-size: 0.7rem;
+  transition: color 0.3s ease;
+}
+
+.legend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  background: #1a1a1a;
-  border-radius: 14px;
-  padding: 10px 4px;
+  gap: 9px;
+  font-size: 0.78rem;
+  color: #c9c9c9;
+  font-weight: 500;
 }
 
-.stat-value {
-  font-family: "Bagel Fat One", sans-serif;
-  font-size: clamp(1.3rem, 6vw, 1.7rem);
-  color: var(--card);
+.legend-list li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
 }
 
-.stat-label {
-  font-size: 0.62rem;
-  color: #a3a3a3;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-top: 2px;
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-/* ---------- reassurance ---------- */
+.dot-clear { background: var(--clear); transition: background 0.3s ease; }
+.dot-picked { background: var(--picked); transition: background 0.3s ease; }
+.dot-blank { background: transparent; border: 1.5px solid #555; }
+
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.chip-clear { background: var(--clear); color: var(--ink-on-color); transition: background 0.3s ease; }
+.chip-picked { background: var(--picked); color: var(--ink-on-color); transition: background 0.3s ease; }
+.chip-clear-soft {
+  background: color-mix(in srgb, var(--clear) 22%, transparent);
+  color: var(--clear);
+  border: 1.5px solid var(--clear);
+  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+.chip-outline {
+  background: none;
+  color: #fff;
+  border: 1.5px solid var(--line);
+}
 
 .reassurance {
-  text-align: center;
-  font-size: 0.85rem;
-  color: #d6d6d6;
-  max-width: 380px;
-  line-height: 1.5;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: #9a9a9a;
   margin: 0;
 }
 
-/* ---------- footer ---------- */
-
-.app-footer {
+.footer-actions {
   display: flex;
   gap: 10px;
 }
 
 .ghost-btn {
   font-family: inherit;
-  font-size: 0.75rem;
-  color: #a3a3a3;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #b4b4b4;
   background: none;
-  border: 1px solid #3a3a3a;
-  padding: 7px 14px;
+  border: 1.5px solid var(--line);
+  padding: 8px 14px;
   border-radius: 999px;
   cursor: pointer;
 }
-
 .ghost-btn:hover { color: #fff; border-color: #666; }
 
-@media (max-width: 360px) {
-  .legend { gap: 10px; }
+/* ---------------------------------------------------------------
+ * calendar main
+ * ------------------------------------------------------------- */
+
+.calendar-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 0 4px;
+}
+
+.weekday-row span {
+  font-weight: 800;
+  font-size: clamp(0.62rem, 2.4vw, 0.85rem);
+  letter-spacing: 0.06em;
+  color: #cfcfcf;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: clamp(4px, 1.4vw, 14px);
+}
+
+.day-cell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.day-cell.empty { visibility: hidden; cursor: default; }
+.day-cell.future { cursor: default; }
+
+.day-circle {
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  background: #fff;
+  transition: background-color 0.3s ease, transform 0.08s ease, box-shadow 0.15s ease;
+}
+
+.day-cell.future .day-circle {
+  background: transparent;
+  border: 1.5px solid var(--line);
+  inset: 6%;
+}
+
+.day-cell.state-clear .day-circle { background: var(--clear); }
+.day-cell.state-picked .day-circle { background: var(--picked); }
+
+.day-cell.today .day-circle {
+  box-shadow: 0 0 0 2.5px var(--bg), 0 0 0 4.5px #fff;
+}
+
+.day-cell:active:not(.future):not(.empty) .day-circle {
+  transform: scale(0.9);
+}
+
+.day-num {
+  position: relative;
+  font-weight: 800;
+  font-size: clamp(0.68rem, 2.6vw, 1rem);
+  color: var(--bg);
+  pointer-events: none;
+}
+
+.day-cell.future .day-num { color: #666; }
+.day-cell.state-clear .day-num,
+.day-cell.state-picked .day-num { color: #fff; }
+
+/* ---------------------------------------------------------------
+ * footer
+ * ------------------------------------------------------------- */
+
+.corner-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #5a5a5a;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  text-transform: uppercase;
 }

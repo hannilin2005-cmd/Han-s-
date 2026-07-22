@@ -6,24 +6,25 @@ spiral.
 
 ## How it works
 
-- Tap a day once to **scratch it off** (like crossing off a wall calendar) —
-  that means your skin stayed clear.
-- Tap it again to mark it as a **patch** — you picked. That's tracked too,
-  because a setback doesn't erase the days before it.
-- Tap a third time to clear the mark.
-- Future days are locked; you can only mark today and the past.
+- Tap a day once to mark it **clear** — your skin stayed untouched. It fills
+  in as a solid accent-colored circle.
+- Tap it again to mark it **picked**. That's tracked too, in a different
+  color, because a setback doesn't erase the days before it.
+- Tap a third time to clear the mark back to blank.
+- Future days sit as hollow outline circles and can't be marked; today gets a
+  ring around it.
 
-The card re-skins itself with a new color palette every month, and the whole
-shape — spiral binding, wavy page edge, torn-paper texture — is drawn with
-plain CSS/SVG, no images.
+Sidebar shows the legend (what each circle color means) and progress: current
+streak, best streak ever, and clear/picked counts for the month you're
+viewing. Streak logic never punishes an unmarked *today* — it only breaks on
+an actual picked day or a genuine gap in the past.
 
-Stats shown: current streak, best streak ever, and clear/picked counts for
-the month you're viewing. Streak logic never punishes an unmarked *today* —
-it only breaks on an actual picked day or a genuine gap in the past.
+Colors shift every month — the grid stays black-and-white, only the two
+accent colors (clear/picked) rotate through a 12-month palette — so the board
+looks a little different each time you flip the calendar.
 
-Data is stored locally in the browser (`localStorage`). Use **export data** /
-**import data** at the bottom to back up or move your history between
-devices.
+Data is stored locally in the browser (`localStorage`). Use **export** /
+**import** in the sidebar to back up or move your history between devices.
 
 ## Running it
 
@@ -37,13 +38,12 @@ then open `http://localhost:8000`.
 
 ## Structure
 
-- `index.html` — markup
-- `css/style.css` — palette variables, wavy card shape, marks, layout
-- `js/app.js` — palette table, wavy-edge path generator, spiral binding,
-  calendar rendering, streak/stat math, localStorage persistence
+- `index.html` — markup: sidebar (brand, legend, progress chips) + calendar grid
+- `css/style.css` — layout, circle-grid styling, month accent variables
+- `js/app.js` — palette table, calendar rendering, streak/stat math,
+  localStorage persistence
 
 ## Customizing
 
-Monthly colors live in the `PALETTES` array at the top of `js/app.js` (index
-0 = January). The wavy-edge amplitude/frequency and spiral coil count are
-also tunable there (`buildWavyPoints` call in `applyWavyClip`, and `buildSpiral`).
+Monthly accent colors live in the `PALETTES` array at the top of `js/app.js`
+(index 0 = January, each entry is `{ clear, picked }`).

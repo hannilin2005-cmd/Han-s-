@@ -1,10 +1,12 @@
 :root {
-  --clear: #7ed321;
-  --picked: #ff5a36;
-  --bg: #0a0a0a;
-  --panel: #141414;
-  --line: #2a2a2a;
-  --ink-on-color: #0a0a0a;
+  --bg-top: #262c52;
+  --bg-bottom: #1b2040;
+  --line: #3a4066;
+  --cream: #f4efe2;
+  --ink: #17161c;
+  --clear: #e6acb8;
+  --picked: #e8c468;
+  --ink-on-color: var(--ink);
   color-scheme: dark;
 }
 
@@ -13,8 +15,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--bg);
-  color: #fff;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%) var(--bg-bottom) fixed;
+  color: var(--cream);
   font-family: "Inter", system-ui, sans-serif;
   min-height: 100%;
 }
@@ -85,9 +87,9 @@ body {
 }
 
 .nav-arrow {
-  background: none;
-  border: 1.5px solid var(--line);
-  color: #fff;
+  background: var(--ink);
+  border: 1.5px solid var(--cream);
+  color: var(--cream);
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -98,7 +100,7 @@ body {
 }
 
 .nav-arrow:hover, .nav-arrow:focus-visible {
-  border-color: #fff;
+  border-color: var(--clear);
   outline: none;
 }
 
@@ -127,7 +129,7 @@ body {
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.08em;
-  color: #8a8a8a;
+  color: color-mix(in srgb, var(--cream) 55%, transparent);
   text-transform: uppercase;
 }
 
@@ -164,7 +166,7 @@ body {
   flex-direction: column;
   gap: 9px;
   font-size: 0.78rem;
-  color: #c9c9c9;
+  color: color-mix(in srgb, var(--cream) 75%, transparent);
   font-weight: 500;
 }
 
@@ -183,7 +185,7 @@ body {
 
 .dot-clear { background: var(--clear); transition: background 0.3s ease; }
 .dot-picked { background: var(--picked); transition: background 0.3s ease; }
-.dot-blank { background: transparent; border: 1.5px solid #555; }
+.dot-blank { background: transparent; border: 1.5px solid var(--line); }
 
 .chip-grid {
   display: flex;
@@ -211,15 +213,15 @@ body {
   transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 .chip-outline {
-  background: none;
-  color: #fff;
+  background: var(--ink);
+  color: var(--cream);
   border: 1.5px solid var(--line);
 }
 
 .reassurance {
   font-size: 0.78rem;
   line-height: 1.55;
-  color: #9a9a9a;
+  color: color-mix(in srgb, var(--cream) 60%, transparent);
   margin: 0;
 }
 
@@ -233,14 +235,14 @@ body {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: #b4b4b4;
-  background: none;
+  color: var(--cream);
+  background: var(--ink);
   border: 1.5px solid var(--line);
   padding: 8px 14px;
   border-radius: 999px;
   cursor: pointer;
 }
-.ghost-btn:hover { color: #fff; border-color: #666; }
+.ghost-btn:hover { border-color: var(--clear); }
 
 /* ---------------------------------------------------------------
  * calendar main
@@ -262,7 +264,7 @@ body {
   font-weight: 800;
   font-size: clamp(0.62rem, 2.4vw, 0.85rem);
   letter-spacing: 0.06em;
-  color: #cfcfcf;
+  color: color-mix(in srgb, var(--cream) 80%, transparent);
   text-align: center;
 }
 
@@ -290,7 +292,7 @@ body {
   position: absolute;
   inset: 6%;
   border-radius: 50%;
-  background: #fff;
+  background: var(--cream);
   transition: background-color 0.3s ease, transform 0.08s ease, box-shadow 0.15s ease;
 }
 
@@ -304,7 +306,7 @@ body {
 .day-cell.state-picked .day-circle { background: var(--picked); }
 
 .day-cell.today .day-circle {
-  box-shadow: 0 0 0 2.5px var(--bg), 0 0 0 4.5px #fff;
+  box-shadow: 0 0 0 2.5px var(--bg-bottom), 0 0 0 4.5px var(--cream);
 }
 
 .day-cell:active:not(.future):not(.empty) .day-circle {
@@ -315,13 +317,11 @@ body {
   position: relative;
   font-weight: 800;
   font-size: clamp(0.68rem, 2.6vw, 1rem);
-  color: var(--bg);
+  color: var(--ink);
   pointer-events: none;
 }
 
-.day-cell.future .day-num { color: #666; }
-.day-cell.state-clear .day-num,
-.day-cell.state-picked .day-num { color: #fff; }
+.day-cell.future .day-num { color: var(--line); }
 
 /* ---------------------------------------------------------------
  * footer
@@ -333,7 +333,7 @@ body {
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: #5a5a5a;
+  color: color-mix(in srgb, var(--cream) 40%, transparent);
   border-top: 1px solid var(--line);
   padding-top: 16px;
   text-transform: uppercase;

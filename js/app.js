@@ -1,25 +1,6 @@
 (() => {
   "use strict";
 
-  /* ---------------------------------------------------------------
-   * Palettes — two flat accent colors per month (clear / picked).
-   * The base grid stays black-and-white; only these shift.
-   * ------------------------------------------------------------- */
-  const PALETTES = [
-    { clear: "#7ed321", picked: "#ff5a36" }, // Jan
-    { clear: "#22d3ee", picked: "#f72585" }, // Feb
-    { clear: "#a3e635", picked: "#fb7185" }, // Mar
-    { clear: "#34d399", picked: "#f97316" }, // Apr
-    { clear: "#facc15", picked: "#8b5cf6" }, // May
-    { clear: "#7ed321", picked: "#ec4899" }, // Jun
-    { clear: "#2dd4bf", picked: "#ff5a36" }, // Jul
-    { clear: "#22d3ee", picked: "#fbbf24" }, // Aug
-    { clear: "#a78bfa", picked: "#fb923c" }, // Sep
-    { clear: "#84cc16", picked: "#f43f5e" }, // Oct
-    { clear: "#38bdf8", picked: "#f97316" }, // Nov
-    { clear: "#4ade80", picked: "#e879f9" }, // Dec
-  ];
-
   const MONTH_ABBR = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
   const WEEKDAYS = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
   const STORAGE_KEY = "mend-data-v1";
@@ -68,13 +49,6 @@
   /* ---------------------------------------------------------------
    * Rendering
    * ------------------------------------------------------------- */
-  function applyPalette() {
-    const p = PALETTES[viewMonth];
-    const root = document.documentElement.style;
-    root.setProperty("--clear", p.clear);
-    root.setProperty("--picked", p.picked);
-  }
-
   function renderWeekdays() {
     els.weekdayRow.innerHTML = WEEKDAYS.map((w) => `<span>${w}</span>`).join("");
   }
@@ -121,7 +95,6 @@
   }
 
   function render() {
-    applyPalette();
     renderBrand();
     renderGrid();
     renderStats();

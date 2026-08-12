@@ -1,30 +1,36 @@
-# MEND
+# RADAR
 
-A gentle daily calendar for skin picking (dermatillomania) recovery, built for
-people managing acne who want a "quit now"-style tracker without the shame
-spiral.
+An automated CRM signal dashboard that surfaces industry-specific ideal
+customer profiles (ICPs) and hot leads by "scanning" the web and trending
+social content.
 
 ## How it works
 
-- Tap a day once to mark it **clear** — your skin stayed untouched. It fills
-  in as a solid accent-colored circle.
-- Tap it again to mark it **picked**. That's tracked too, in a different
-  color, because a setback doesn't erase the days before it.
-- Tap a third time to clear the mark back to blank.
-- Future days sit as hollow outline circles and can't be marked; today gets a
-  ring around it.
+- Pick an industry in the sidebar (SaaS, e-commerce, healthcare, FinTech,
+  manufacturing, cybersecurity, professional services, real estate). Each
+  one ships with a pre-built ICP: firmographics, tech stack, decision-maker
+  titles, and the pain points to lead with.
+- The **Signal Feed** shows individual buying-intent signals — a company
+  hiring for a relevant role, a funding announcement, a complaint thread
+  about a competitor, a spike in search interest — each tagged with its
+  source (LinkedIn, X/Twitter, Reddit, news, job postings, review sites,
+  Google Trends) and an intent score. Filter by source with the chips above
+  the feed.
+- **Hot Leads** aggregates signals per company into a ranked list, so you
+  can see who's showing the most buying intent right now for the selected
+  industry.
+- Hit **Scan now** to pull in fresh signals, or flip on **Live scanning**
+  to have new signals arrive automatically every few seconds.
+- **Save to CRM** on any signal or lead pulls it into the **Saved** tab,
+  which persists across industries and page reloads via `localStorage`.
 
-Sidebar shows the legend (what each circle color means) and progress: current
-streak, best streak ever, and clear/picked counts for the month you're
-viewing. Streak logic never punishes an unmarked *today* — it only breaks on
-an actual picked day or a genuine gap in the past.
-
-Colors shift every month — the grid stays black-and-white, only the two
-accent colors (clear/picked) rotate through a 12-month palette — so the board
-looks a little different each time you flip the calendar.
-
-Data is stored locally in the browser (`localStorage`). Use **export** /
-**import** in the sidebar to back up or move your history between devices.
+All data — companies, signals, trending tags — is generated locally from
+templates. Nothing here calls out to real APIs. It's built so the shape
+(sources, scoring, aggregation, CRM save) maps directly onto a real
+pipeline: swap the signal generator for actual search/social API calls
+(SerpAPI, X/Reddit/LinkedIn APIs, job board scrapers, review sites) and the
+rest of the app — feed, scoring, hot-lead ranking, saved list — keeps
+working unchanged.
 
 ## Running it
 
@@ -38,12 +44,14 @@ then open `http://localhost:8000`.
 
 ## Structure
 
-- `index.html` — markup: sidebar (brand, legend, progress chips) + calendar grid
-- `css/style.css` — layout, circle-grid styling, month accent variables
-- `js/app.js` — palette table, calendar rendering, streak/stat math,
-  localStorage persistence
+- `index.html` — markup: sidebar (brand, industry picker, stats) + main
+  area (tabs, ICP card, trending strip, signal feed / hot leads / saved)
+- `css/style.css` — dark control-room theme, cards, chips, tabs
+- `js/app.js` — mock ICP/industry data, signal generation & scoring,
+  hot-lead aggregation, tab/filter rendering, `localStorage` persistence
 
 ## Customizing
 
-Monthly accent colors live in the `PALETTES` array at the top of `js/app.js`
-(index 0 = January, each entry is `{ clear, picked }`).
+Industries, ICP criteria, trending tags, and signal templates all live in
+the `INDUSTRIES` array at the top of `js/app.js` — add an industry by
+adding an entry with `icp`, `trending`, and `signalTemplates`.

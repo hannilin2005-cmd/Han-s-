@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>MEND — a calendar for skin picking recovery</title>
-<meta name="description" content="A gentle daily tracker for skin picking (dermatillomania) recovery. Circle off the clear days, patch the picked ones." />
+<title>BLOOM — beauty &amp; wellness ICP intelligence</title>
+<meta name="description" content="An automated CRM that scans the web and trending social content to surface ideal customer profiles and hot prospects for B2C beauty and wellness brands." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -18,55 +18,73 @@
       <aside class="sidebar">
         <div class="brand">
           <div class="brand-row">
-            <button class="nav-arrow" id="prevMonth" aria-label="Previous month">&#8592;</button>
-            <h1 class="brand-month" id="monthAbbrev">JUN</h1>
-            <button class="nav-arrow" id="nextMonth" aria-label="Next month">&#8594;</button>
+            <span class="live-dot" id="liveDot" aria-hidden="true"></span>
+            <h1 class="brand-name">BLOOM</h1>
           </div>
-          <div class="brand-sub">
-            <span class="brand-app">MEND</span>
-            <span class="brand-num" id="monthNum">06</span>
-          </div>
-          <p class="brand-tagline">SKIN PICKING RECOVERY &middot; <span id="yearLabel">2026</span></p>
+          <p class="brand-tagline">BEAUTY &amp; WELLNESS ICP INTELLIGENCE</p>
+          <p class="brand-sub">Scans TikTok, Instagram, Reddit &amp; more to find your ideal customer &mdash; and who's ready to buy right now.</p>
         </div>
 
         <div class="side-block">
-          <h2 class="block-title"><span class="title-arrow">&#10148;</span> MARK TYPE</h2>
-          <ul class="legend-list">
-            <li><span class="dot dot-clear"></span> CLEAR &mdash; skin stayed untouched</li>
-            <li><span class="dot dot-picked"></span> PICKED &mdash; logged, not punished</li>
-            <li><span class="dot dot-blank"></span> UNMARKED &mdash; not logged yet</li>
-          </ul>
+          <h2 class="block-title"><span class="title-arrow">&#10022;</span> AUDIENCE SEGMENT</h2>
+          <ul class="segment-list" id="segmentList"></ul>
         </div>
 
         <div class="side-block">
-          <h2 class="block-title"><span class="title-arrow">&#10148;</span> PROGRESS</h2>
+          <h2 class="block-title"><span class="title-arrow">&#10022;</span> TODAY</h2>
           <div class="chip-grid">
-            <span class="chip chip-clear" id="statStreak">0 DAY STREAK</span>
-            <span class="chip chip-outline" id="statBest">BEST 0</span>
-            <span class="chip chip-clear-soft" id="statMonthClear">0 CLEAR</span>
-            <span class="chip chip-picked" id="statMonthPicked">0 PICKED</span>
+            <span class="chip chip-accent" id="statSignals">0 SIGNALS</span>
+            <span class="chip chip-outline" id="statHot">0 HOT PROSPECTS</span>
+            <span class="chip chip-outline" id="statSaved">0 SAVED</span>
           </div>
         </div>
 
-        <p class="reassurance">A picked day doesn't erase your progress. Every clear day still counts &mdash; tap tomorrow's circle when it comes.</p>
+        <label class="live-toggle">
+          <input type="checkbox" id="liveToggle" />
+          <span>Live scanning</span>
+        </label>
 
-        <div class="footer-actions">
-          <button class="ghost-btn" id="exportBtn">EXPORT</button>
-          <label class="ghost-btn" for="importInput">IMPORT</label>
-          <input type="file" id="importInput" accept="application/json" hidden />
-        </div>
+        <p class="reassurance">Demo data &mdash; signals are generated locally to model what real web &amp; social scanning would surface. No external calls are made.</p>
       </aside>
 
-      <main class="calendar-main">
-        <div class="weekday-row" id="weekdayRow"></div>
-        <div class="grid" id="grid"></div>
+      <main class="main">
+        <div class="tab-row">
+          <div class="tabs" role="tablist">
+            <button class="tab-btn is-active" data-view="signals" role="tab">Signal Feed</button>
+            <button class="tab-btn" data-view="leads" role="tab">Hot Prospects</button>
+            <button class="tab-btn" data-view="saved" role="tab">Saved <span id="savedCount"></span></button>
+          </div>
+          <button class="scan-btn" id="scanBtn">
+            <span class="scan-icon">&#8635;</span> Scan now
+          </button>
+        </div>
+
+        <section class="view" id="view-signals">
+          <div class="icp-card" id="icpCard"></div>
+
+          <div class="trending-strip" id="trendingStrip"></div>
+
+          <div class="source-filters" id="sourceFilters"></div>
+
+          <div class="signal-feed" id="signalFeed"></div>
+        </section>
+
+        <section class="view is-hidden" id="view-leads">
+          <p class="view-intro">Real people ranked by cumulative buying-intent signal for <strong id="leadsSegmentName"></strong>.</p>
+          <div class="lead-list" id="leadList"></div>
+        </section>
+
+        <section class="view is-hidden" id="view-saved">
+          <p class="view-intro">Prospects you've pulled into the CRM, across every segment.</p>
+          <div class="lead-list" id="savedList"></div>
+        </section>
       </main>
 
     </div>
 
     <footer class="corner-footer">
-      <span>MEND CALENDAR</span>
-      <span>SKIN PICKING RECOVERY</span>
+      <span>BLOOM</span>
+      <span>BEAUTY &amp; WELLNESS ICP INTELLIGENCE</span>
     </footer>
   </div>
 

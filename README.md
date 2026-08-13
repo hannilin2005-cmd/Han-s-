@@ -1,30 +1,38 @@
-# MEND
+# BLOOM
 
-A gentle daily calendar for skin picking (dermatillomania) recovery, built for
-people managing acne who want a "quit now"-style tracker without the shame
-spiral.
+An automated CRM that scans the web and trending social content to surface
+ideal customer profiles (ICPs) and hot prospects for **B2C beauty and
+wellness brands**.
 
 ## How it works
 
-- Tap a day once to mark it **clear** — your skin stayed untouched. It fills
-  in as a solid accent-colored circle.
-- Tap it again to mark it **picked**. That's tracked too, in a different
-  color, because a setback doesn't erase the days before it.
-- Tap a third time to clear the mark back to blank.
-- Future days sit as hollow outline circles and can't be marked; today gets a
-  ring around it.
+- Pick an audience segment in the sidebar — eight ICPs built for beauty and
+  wellness, from the Gen Z skin-cycling enthusiast living on #SkinTok to the
+  luxury anti-aging loyalist reading dermatologist explainers. Each one ships
+  with a pre-built ICP: age range, spend tier, the platforms they live on,
+  what triggers a purchase, and the content hooks that convert them.
+- The **Signal Feed** shows individual buying-intent signals from real
+  people — a viral "get ready with me" video tagging a product, a Reddit
+  thread asking for recommendations, a 5-star review, a spike in search
+  interest — each tagged with its source (TikTok, Instagram, YouTube,
+  Reddit, Pinterest, review sites, Google Trends, creator DMs) and an intent
+  score. Filter by source with the chips above the feed.
+- **Hot Prospects** aggregates signals per person into a ranked list, so you
+  can see who's showing the most buying intent right now for the selected
+  segment — the people worth DMing, gifting product to, or retargeting with
+  ads.
+- Hit **Scan now** to pull in fresh signals, or flip on **Live scanning** to
+  have new signals arrive automatically every few seconds.
+- **Save to CRM** on any signal or prospect pulls it into the **Saved** tab,
+  which persists across segments and page reloads via `localStorage`.
 
-Sidebar shows the legend (what each circle color means) and progress: current
-streak, best streak ever, and clear/picked counts for the month you're
-viewing. Streak logic never punishes an unmarked *today* — it only breaks on
-an actual picked day or a genuine gap in the past.
-
-Colors shift every month — the grid stays black-and-white, only the two
-accent colors (clear/picked) rotate through a 12-month palette — so the board
-looks a little different each time you flip the calendar.
-
-Data is stored locally in the browser (`localStorage`). Use **export** /
-**import** in the sidebar to back up or move your history between devices.
+All data — handles, signals, trending tags — is generated locally from
+templates. Nothing here calls out to real APIs. It's built so the shape
+(sources, scoring, aggregation, CRM save) maps directly onto a real
+pipeline: swap the signal generator for actual social/search API calls
+(TikTok, Instagram, YouTube, Reddit, Pinterest, review platforms, Google
+Trends) and the rest of the app — feed, scoring, hot-prospect ranking,
+saved list — keeps working unchanged.
 
 ## Running it
 
@@ -38,12 +46,14 @@ then open `http://localhost:8000`.
 
 ## Structure
 
-- `index.html` — markup: sidebar (brand, legend, progress chips) + calendar grid
-- `css/style.css` — layout, circle-grid styling, month accent variables
-- `js/app.js` — palette table, calendar rendering, streak/stat math,
-  localStorage persistence
+- `index.html` — markup: sidebar (brand, segment picker, stats) + main area
+  (tabs, ICP card, trending strip, signal feed / hot prospects / saved)
+- `css/style.css` — light editorial beauty theme, cards, chips, tabs
+- `js/app.js` — mock ICP/segment data, signal generation & scoring,
+  hot-prospect aggregation, tab/filter rendering, `localStorage` persistence
 
 ## Customizing
 
-Monthly accent colors live in the `PALETTES` array at the top of `js/app.js`
-(index 0 = January, each entry is `{ clear, picked }`).
+Segments, ICP criteria, trending tags, and signal templates all live in the
+`SEGMENTS` array at the top of `js/app.js` — add a segment by adding an
+entry with `icp`, `trending`, and `signalTemplates`.

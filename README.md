@@ -1,3 +1,6 @@
+> **Also in this repo:** [`calendar/`](calendar/) is *Han's Calendar*, a poster-style
+> event calendar with custom boards and per-event reminders. See its README.
+
 # MEND
 
 A gentle daily calendar for skin picking (dermatillomania) recovery, built for

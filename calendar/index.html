@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Han's Calendar</title>
+<meta name="description" content="A bubbly poster-style calendar with your own event boards and per-event reminders." />
+<meta name="theme-color" content="#f6df57" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Calendar" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- shared SVG filter: the speckled "risograph" grain used on letter shadows and sparkles -->
+  <svg class="defs" aria-hidden="true" width="0" height="0">
+    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="7" result="noise" />
+      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  3.4 0 0 0 -1.05" result="speckle" />
+      <feComposite in="SourceGraphic" in2="speckle" operator="in" />
+    </filter>
+  </svg>
+
+  <div class="app">
+
+    <header class="topbar">
+      <div class="nav-group" id="monthNav">
+        <button class="pill-btn icon" id="prevBtn" aria-label="Previous month">&#8249;</button>
+        <button class="pill-btn" id="todayBtn">TODAY</button>
+        <button class="pill-btn icon" id="nextBtn" aria-label="Next month">&#8250;</button>
+      </div>
+      <nav class="tabs" aria-label="Views">
+        <button class="tab active" data-view="month">CALENDAR</button>
+        <button class="tab" data-view="boards">BOARDS</button>
+        <button class="tab" data-view="upcoming">UPCOMING</button>
+      </nav>
+      <div class="nav-group">
+        <button class="pill-btn icon" id="settingsBtn" aria-label="Notifications &amp; settings" title="Notifications &amp; settings">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2Z"/></svg>
+          <span class="bell-dot" id="bellDot" hidden></span>
+        </button>
+        <button class="pill-btn primary" id="addBtn">+ EVENT</button>
+      </div>
+    </header>
+
+    <!-- MONTH -->
+    <section class="view" id="monthView">
+      <div class="poster">
+        <div class="poster-head">
+          <div class="month-word" id="monthWord"></div>
+          <div class="year" id="yearLabel"></div>
+        </div>
+        <div class="weekdays" id="weekdays"></div>
+        <div class="grid" id="grid"></div>
+      </div>
+      <div class="filter-row" id="filterRow"></div>
+    </section>
+
+    <!-- BOARDS -->
+    <section class="view" id="boardsView" hidden>
+      <div class="word-head" id="boardsWord"></div>
+      <p class="view-sub">Name your own boards &mdash; like Pinterest boards or Google Maps lists &mdash; and pin events to them.</p>
+      <div class="boards" id="boardsGrid"></div>
+    </section>
+
+    <!-- ONE BOARD -->
+    <section class="view" id="boardView" hidden>
+      <div class="board-head">
+        <button class="pill-btn icon" id="boardBack" aria-label="Back to boards">&#8249;</button>
+        <span class="board-head-emoji" id="boardEmoji"></span>
+        <h2 class="board-head-name" id="boardName"></h2>
+        <div class="board-head-actions">
+          <button class="pill-btn" id="boardEdit">EDIT BOARD</button>
+          <button class="pill-btn primary" id="boardAdd">+ PIN EVENT</button>
+        </div>
+      </div>
+      <div class="pins" id="pins"></div>
+    </section>
+
+    <!-- UPCOMING -->
+    <section class="view" id="upcomingView" hidden>
+      <div class="word-head" id="upcomingWord"></div>
+      <div id="upcomingList"></div>
+    </section>
+  </div>
+
+  <!-- Day sheet -->
+  <dialog id="dayDialog">
+    <div class="sheet">
+      <button class="close-x" data-close aria-label="Close">&times;</button>
+      <p class="sheet-kicker" id="dayKicker"></p>
+      <h2 class="sheet-title" id="dayTitle"></h2>
+      <div class="day-list" id="dayList"></div>
+      <button class="pill-btn primary wide" id="dayAdd">+ ADD EVENT</button>
+    </div>
+  </dialog>
+
+  <!-- Event editor -->
+  <dialog id="eventDialog">
+    <form class="sheet" id="eventForm" novalidate>
+      <button type="button" class="close-x" data-close aria-label="Close">&times;</button>
+      <h2 class="sheet-title" id="eventHeading">NEW EVENT</h2>
+
+      <label class="field">
+        <span>Title</span>
+        <input id="evTitle" type="text" maxlength="120" placeholder="Dinner with Mia" required />
+      </label>
+
+      <div class="row-2">
+        <label class="field">
+          <span>Date</span>
+          <input id="evDate" type="date" required />
+        </label>
+        <label class="field">
+          <span>Repeat</span>
+          <select id="evRepeat"></select>
+        </label>
+      </div>
+
+      <label class="toggle">
+        <input id="evAllDay" type="checkbox" />
+        <span>All day</span>
+      </label>
+
+      <div class="row-2" id="timeRow">
+        <label class="field">
+          <span>Starts</span>
+          <input id="evStart" type="time" value="09:00" />
+        </label>
+        <label class="field">
+          <span>Ends</span>
+          <input id="evEnd" type="time" value="10:00" />
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Board</span>
+        <select id="evCategory"></select>
+      </label>
+
+      <label class="field">
+        <span>Location</span>
+        <input id="evLocation" type="text" maxlength="160" placeholder="optional" />
+      </label>
+
+      <label class="field">
+        <span>Notes</span>
+        <textarea id="evNotes" rows="3" maxlength="2000" placeholder="optional"></textarea>
+      </label>
+
+      <fieldset class="reminders">
+        <legend>Reminders</legend>
+        <div id="reminderList"></div>
+        <button type="button" class="pill-btn small" id="addReminder">+ ADD REMINDER</button>
+      </fieldset>
+
+      <div class="sheet-actions">
+        <button type="button" class="pill-btn danger" id="evDelete">DELETE</button>
+        <button type="button" class="pill-btn" id="evIcs" title="Download an .ics file your phone's calendar can import, reminders included">ADD TO PHONE CALENDAR</button>
+        <button type="submit" class="pill-btn primary">SAVE</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Board (category) editor -->
+  <dialog id="categoryDialog">
+    <form class="sheet" id="categoryForm" novalidate>
+      <button type="button" class="close-x" data-close aria-label="Close">&times;</button>
+      <h2 class="sheet-title" id="categoryHeading">NEW BOARD</h2>
+      <div class="row-emoji">
+        <label class="field emoji-field">
+          <span>Icon</span>
+          <input id="catEmoji" type="text" maxlength="8" />
+        </label>
+        <label class="field">
+          <span>Board name</span>
+          <input id="catName" type="text" maxlength="40" placeholder="Gym days, Concerts, Uni deadlines…" required />
+        </label>
+      </div>
+      <div class="emoji-picks" id="emojiPicks"></div>
+      <p class="field-label">Colour</p>
+      <div class="swatches" id="swatches"></div>
+      <div class="sheet-actions">
+        <button type="button" class="pill-btn danger" id="catDelete">DELETE BOARD</button>
+        <button type="submit" class="pill-btn primary">SAVE</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Settings / notifications -->
+  <dialog id="settingsDialog">
+    <div class="sheet">
+      <button class="close-x" data-close aria-label="Close">&times;</button>
+      <h2 class="sheet-title">NOTIFICATIONS</h2>
+
+      <div class="status-line">
+        <span class="status-dot" id="notifDot"></span>
+        <span id="notifStatus"></span>
+      </div>
+      <div class="sheet-actions left">
+        <button class="pill-btn primary" id="notifEnable">TURN ON NOTIFICATIONS</button>
+        <button class="pill-btn" id="notifTest">SEND A TEST IN 5 SEC</button>
+      </div>
+
+      <div class="info-box">
+        <p><strong>How reminders reach you</strong></p>
+        <ul>
+          <li>While this calendar is open (a browser tab, or the installed app), every reminder fires on time with the style you picked: a notification, a silent notification, a ringing alarm, or a pop-up.</li>
+          <li>Reminders that came due while it was closed show up as <em>missed</em> the next time you open it (up to 12 hours back).</li>
+          <li><strong>iPhone/iPad:</strong> Apple only allows web notifications from apps added to the Home Screen. In Safari tap Share &rarr; <em>Add to Home Screen</em>, open it from there, then turn notifications on.</li>
+          <li><strong>Want reminders even when it's closed?</strong> Send your events to your phone's own calendar. The file includes every reminder, so your phone will alert you.</li>
+        </ul>
+      </div>
+      <div class="sheet-actions left">
+        <button class="pill-btn" id="icsAll">EXPORT ALL TO PHONE CALENDAR (.ICS)</button>
+      </div>
+
+      <h3 class="sheet-sub">BACKUP</h3>
+      <p class="muted">Everything is saved in this browser. Back it up or move it to another device:</p>
+      <div class="sheet-actions left">
+        <button class="pill-btn" id="exportBtn">EXPORT BACKUP</button>
+        <label class="pill-btn" for="importInput">IMPORT BACKUP</label>
+        <input type="file" id="importInput" accept="application/json" hidden />
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Ringing alarm -->
+  <div class="alarm" id="alarm" hidden role="alertdialog" aria-labelledby="alarmTitle">
+    <div class="alarm-card">
+      <div class="alarm-word" id="alarmWord"></div>
+      <h2 id="alarmTitle"></h2>
+      <p id="alarmWhen"></p>
+      <div class="alarm-actions">
+        <button class="pill-btn" data-snooze="5">SNOOZE 5 MIN</button>
+        <button class="pill-btn" data-snooze="15">SNOOZE 15 MIN</button>
+        <button class="pill-btn primary" id="alarmDismiss">DISMISS</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
